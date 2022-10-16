@@ -2,8 +2,7 @@ package com.budgets.modules.employee.entities.enums;
 
 public enum RoleEmployee {
     ADMIN(1),
-    MANAGER(2),
-    EMPLOYEE(3);
+    EMPLOYEE(2);
 
     private int code;
 
