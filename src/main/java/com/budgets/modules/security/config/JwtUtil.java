@@ -19,8 +19,9 @@ public class JwtUtil {
 
     private final HashMap<String, Object> hashMap = new HashMap<>();
 
-    public String generationToken(Long id){
+    public String generationToken(Long id, String type){
         hashMap.put("id", id.toString());
+        hashMap.put("type", type);
         return Jwts
                 .builder()
                 .setClaims(hashMap)
@@ -49,9 +50,15 @@ public class JwtUtil {
         return now.before(claims.getExpiration());
     }
 
-    public Long getId(String token) {
+    public String getId(String token) {
         Claims claims = getClaims(token);
         assert claims != null;
-        return Long.valueOf(claims.get("id").toString());
+        return claims.get("id").toString();
+    }
+
+    public String getType(String token) {
+        Claims claims = getClaims(token);
+        assert claims != null;
+        return claims.get("type").toString();
     }
 }

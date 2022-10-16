@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,7 @@ public class UserController<decodeToken> {
     public ResponseEntity<UserRegisterDTO> login(@RequestBody UserLoginDTO user, HttpServletResponse request) {
         try {
             UserRegisterDTO byUser = service.findByUser(user);
-            String token = jwtUtil.generationToken(byUser.getId());
+            String token = jwtUtil.generationToken(byUser.getId(), "USER");
             request.addHeader("Authorization", "Bearer "+token);
             return new ResponseEntity<>(byUser, HttpStatus.OK);
         } catch (UsernameNotFoundException e) {
@@ -66,6 +67,7 @@ public class UserController<decodeToken> {
         return new TokenDTO(id);
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @GetMapping()
     public ResponseEntity<UserOutputDTO> getUser(@RequestHeader("Authorization") String token) {
         try {
@@ -77,6 +79,7 @@ public class UserController<decodeToken> {
         }
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @PatchMapping
     public ResponseEntity<UserOutputDTO> changePassword(@RequestHeader("Authorization") String token,
                                                     @RequestBody EditUserDTO user) {

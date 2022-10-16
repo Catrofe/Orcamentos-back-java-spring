@@ -1,37 +1,35 @@
-package com.budgets.modules.user.entities;
+package com.budgets.modules.employee.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_employee")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class User implements UserDetails {
+@NoArgsConstructor
+public class Employee implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Column(unique = true)
     private String email;
     private String password;
-    @Column(unique = true)
     private String cpf;
-    private String phone;
     @JsonIgnore
-    private String authorities = "USER";
+    private Boolean active = false;
+    @JsonIgnore
+    private String authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -67,13 +65,13 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "Employee{" +
                 "id=" + id +
-                ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", active=" + active +
                 ", authorities='" + authorities + '\'' +
                 '}';
     }

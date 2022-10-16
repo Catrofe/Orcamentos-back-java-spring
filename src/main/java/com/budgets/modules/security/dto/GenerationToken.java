@@ -10,5 +10,6 @@ import java.io.Serializable;
 @Builder
 public class GenerationToken implements Serializable {
     private Long id;
+    private String type;
     private Long exp;
 }

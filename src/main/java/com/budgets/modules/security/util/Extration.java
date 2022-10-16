@@ -13,5 +13,12 @@ public class Extration {
         GenerationToken generationToken = objectMapper.readValue(extrationClaims, GenerationToken.class);
         return generationToken.getId();
     }
+
+    public String extrationRole(Claims claims) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String extrationClaims = objectMapper.writeValueAsString(claims);
+        GenerationToken generationToken = objectMapper.readValue(extrationClaims, GenerationToken.class);
+        return generationToken.getType();
+    }
 }
 

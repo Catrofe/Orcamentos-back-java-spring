@@ -28,6 +28,8 @@ public class SecurityConfig{
     private static final String[] PUBLIC_MATCHERS = {
             "/user",
             "/user/auth/login",
+            "/employee",
+            "/employee/auth/login",
     };
 
     @Bean
@@ -38,7 +40,7 @@ public class SecurityConfig{
         http.csrf().disable().authorizeRequests()
                 .mvcMatchers(HttpMethod.POST,PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
-        http.addFilterBefore(new JwtAuthorizationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthorizationFilter(jwtUtil, userService), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
